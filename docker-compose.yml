@@ -11,6 +11,7 @@ services:
                 image: 'jacobalberty/unifi:5.11.39'
         portainer:
                 container_name: Portainer
+                restart: always
                 ports:
                     - '9000:9000'
                 volumes:
@@ -19,6 +20,7 @@ services:
                 image: portainer/portainer
         unifi-video-controller:
                 container_name: Unifi.Video
+                restart: always
                 network_mode: 'host'
                 volumes:
                     - '/docker/unifi_video/data:/var/lib/unifi-video'
@@ -28,4 +30,7 @@ services:
                     - PUID=99
                     - PGID=100
                     - DEBUG=1
+                cap_add:
+                    - SYS_ADMIN
+                    - DAC_READ_SEARCH
                 image: pducharme/unifi-video-controller
