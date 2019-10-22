@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+        unifi:
+                container_name: Unifi.Ctrl
+                restart: always
+                environment:
+                        - TZ=Europe/Brussels
+                volumes:
+                        - '/docker/unifi:/unifi'
+                network_mode: 'host'
+                image: 'jacobalberty/unifi:5.11.39'
+        portainer:
+                container_name: Portainer
+                ports:
+                    - '9000:9000'
+                volumes:
+                    - '/var/run/docker.sock:/var/run/docker.sock'
+                    - '/docker/portainer/data:/data'
+                image: portainer/portainer
