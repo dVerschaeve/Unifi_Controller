@@ -1,0 +1,10 @@
+{
+  "database": {
+    "engine": "mysql",
+    "host": "maria-db",
+    "name": "nginx",
+    "user": "npm",
+    "password": "SQLPASSWORD",
+    "port": 3306
+  }
+}
