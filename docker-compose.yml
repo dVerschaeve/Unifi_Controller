@@ -19,7 +19,7 @@ services:
                     - '/docker/portainer/data:/data'
                 image: portainer/portainer
         unifi-video-controller:
-                container_name: Unifi.Vide
+                container_name: Unifi.Video
 
                 restart: always
 
@@ -36,3 +36,37 @@ services:
                 image: 'pducharme/unifi-video-controller:3.10.6'
                 security_opt:
                    - apparmor:unconfined
+        nginx-proxy:
+                container_name: nginx.proxy
+                image: jc21/nginx-proxy-manager:latest
+                ports:
+                  - 80:80
+                  - 81:81
+                  - 443:443
+                volumes:
+                  - /docker/Unifi_Controller/nginx.json:/app/config/production.json
+                  - /docker/nginx/data:/data
+                  - /docker/nginx/letsencrypt:/etc/letsencrypt
+                depends_on:
+                  - maria-db
+                environment:
+                  - FORCE_COLOR=1
+        maria-db:
+                container_name: nginx.mariadb
+                image: mariadb:latest
+                restart: always
+                secrets:
+                        - MYSQL_ROOT_PASSWORD
+                        - MYSQL_PASSWORD
+                environment:
+                        MYSQL_ROOT_PASSWORD_FILE: '/run/secrets/MYSQL_ROOT_PASSWORD'
+                        MYSQL_PASSWORD_FILE: '/run/secrets/MYSQL_PASSWORD'
+                        MYSQL_DATABASE: "nginx"
+                        MYSQL_USER : "npm"
+                volumes:
+                        - /docker/mariadb/mysql:/var/lib/mysql
+secrets:
+        MYSQL_ROOT_PASSWORD:
+                file: /docker/Unifi_Controller/mysql_root_password
+        MYSQL_PASSWORD:
+                file: /docker/Unifi_Controller/mysql_password
