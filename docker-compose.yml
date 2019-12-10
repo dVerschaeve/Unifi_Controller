@@ -26,7 +26,7 @@ services:
                 network_mode: 'host'
                 volumes:
                     - '/docker/unifi_video/data:/var/lib/unifi-video'
-                    - '/docker/unifi_video/recordings:/var/lib/unifi-video/videos'
+                    - '/media/USB/Unifi.Video:/var/lib/unifi-video/videos'
                 environment:
                     - TZ=Europe/Brussels
                     - DEBUG=1
@@ -65,6 +65,16 @@ services:
                         MYSQL_USER : "npm"
                 volumes:
                         - /docker/mariadb/mysql:/var/lib/mysql
+        rsync-server:
+                container_name: rsync.srv
+                ports:
+                        - 873:873
+                environment:
+                        - USERNAME=user
+                        - PASSWORD=pass
+                volumes:
+                        - '/docker/rsync:/data'
+                image: apnar/rsync-server
 secrets:
         MYSQL_ROOT_PASSWORD:
                 file: /docker/Unifi_Controller/mysql_root_password
