@@ -8,7 +8,7 @@ services:
                 volumes:
                         - '/docker/unifi:/unifi'
                 network_mode: 'host'
-                image: 'jacobalberty/unifi:5.12.35'
+                image: 'jacobalberty/unifi:5.14.23'
         portainer:
                 container_name: Portainer
                 restart: always
